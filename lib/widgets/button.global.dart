@@ -29,7 +29,7 @@ class ButtonGlobal extends StatelessWidget {
           text,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
             letterSpacing: 1.2,
           ),

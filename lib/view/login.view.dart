@@ -40,7 +40,7 @@ class _LoginViewState extends State<LoginView> {
             width: double.infinity,
             padding: const EdgeInsets.all(15.0),
             child: Container(
-              padding: const EdgeInsets.only(top: 120),
+              padding: const EdgeInsets.only(top: 100),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -57,7 +57,7 @@ class _LoginViewState extends State<LoginView> {
                       "CampusConnect",
                       style: TextStyle(
                           color: GlobalColors.mainColor,
-                          fontSize: 30,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -69,7 +69,7 @@ class _LoginViewState extends State<LoginView> {
                       "Login to your account",
                       style: TextStyle(
                           color: GlobalColors.textColor,
-                          fontSize: 20,
+                          fontSize: 16,
                           fontWeight: FontWeight.w500),
                     ),
                   ),
