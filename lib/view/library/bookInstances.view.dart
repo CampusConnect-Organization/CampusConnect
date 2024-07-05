@@ -64,9 +64,15 @@ class _BookInstancesViewState extends State<BookInstancesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Book Instances"),
+        title: const Text("Book Instances", style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: GlobalColors.mainColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white,),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: bookInstances != null
           ? RefreshIndicator(

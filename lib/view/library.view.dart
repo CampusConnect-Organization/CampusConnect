@@ -28,11 +28,15 @@ class _LibraryViewState extends State<LibraryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Library Section", style: TextStyle(color: Colors.white)),
+        title: const Text("Library Section",
+            style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: GlobalColors.mainColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white,),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
           onPressed: () => Get.off(() => const HomeView()),
         ),
       ),
@@ -48,6 +52,14 @@ class _LibraryViewState extends State<LibraryView> {
         elevation: 0,
         currentIndex: pageIndex,
         selectedItemColor: GlobalColors.mainColor,
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold, // Customize font weight
+          fontSize: 14, // Customize font size
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.normal, // Customize font weight
+          fontSize: 12, // Customize font size
+        ),
         onTap: onItemTapped,
       ),
     );

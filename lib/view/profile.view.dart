@@ -177,7 +177,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                     const SizedBox(width: 10),
                                     Text(
                                       titleCase(_profile!.data.gender),
-                                      style: const TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),
@@ -189,7 +189,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                     const SizedBox(width: 10),
                                     Text(
                                       _profile!.data.dateOfBirth,
-                                      style: const TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),
@@ -201,7 +201,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                     const SizedBox(width: 10),
                                     Text(
                                       _profile!.data.address,
-                                      style: const TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),
@@ -213,7 +213,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                     const SizedBox(width: 10),
                                     Text(
                                       _profile!.data.symbolNumber ?? "None",
-                                      style: const TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),
@@ -224,7 +224,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                     const SizedBox(width: 10),
                                     Text(
                                       _profile!.data.academics,
-                                      style: const TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),
@@ -236,7 +236,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                     const SizedBox(width: 10),
                                     Text(
                                       "${_profile!.data.semester} Semester",
-                                      style: const TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),

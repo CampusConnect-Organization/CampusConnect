@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 
 class TextFormGlobal extends StatefulWidget {
@@ -26,48 +24,88 @@ class TextFormGlobal extends StatefulWidget {
 
 class _TextFormGlobalState extends State<TextFormGlobal> {
   bool _obscureText = true;
+  bool _isFocused = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_handleControllerChange);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_handleControllerChange);
+    super.dispose();
+  }
+
+  void _handleControllerChange() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      padding: const EdgeInsets.only(top: 3, left: 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(6),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 7,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (_isFocused || widget.controller.text.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(left: 16, bottom: 4),
+            child: Text(
+              widget.labelText,
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            ),
           ),
-        ],
-      ),
-      child: TextFormField(
-        controller: widget.controller,
-        keyboardType: widget.textInputType,
-        obscureText: _obscureText && widget.obscure,
-        decoration: InputDecoration(
-          hintText: widget.text,
-          border: InputBorder.none,
-          labelText: widget.labelText,
-          contentPadding: const EdgeInsets.all(0),
-          hintStyle: const TextStyle(height: 1),
-          suffixIcon: widget.obscure
-              ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                  icon: Icon(
-                    _obscureText ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.grey,
-                  ),
-                )
-              : null,
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Focus(
+            onFocusChange: (hasFocus) {
+              setState(() {
+                _isFocused = hasFocus;
+              });
+            },
+            child: TextFormField(
+              controller: widget.controller,
+              keyboardType: widget.textInputType,
+              obscureText: _obscureText && widget.obscure,
+              style: const TextStyle(fontSize: 16),
+              decoration: InputDecoration(
+                hintText: _isFocused || widget.controller.text.isNotEmpty ? '' : widget.text,
+                border: InputBorder.none,
+                hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+                contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                suffixIcon: widget.obscure
+                    ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                        icon: Icon(
+                          _obscureText ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                      )
+                    : null,
+              ),
+              onTap: widget.onTap,
+            ),
+          ),
         ),
-        onTap: widget.onTap,
-      ),
+      ],
     );
   }
 }

@@ -174,6 +174,7 @@ class _CourseViewState extends State<CourseView>
             ],
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white.withOpacity(0.5),
+            labelStyle: const TextStyle(fontSize: 11.0),
           ),
         ),
       ),
@@ -238,7 +239,7 @@ class _CourseViewState extends State<CourseView>
                           children: [
                             Text(
                               currentItem!.course,
-                              style: const TextStyle(fontSize: 18.0),
+                              style: const TextStyle(fontSize: 16.0),
                             ),
                             const SizedBox(height: 10),
                             GreyText(
@@ -287,7 +288,7 @@ class _CourseViewState extends State<CourseView>
                           children: [
                             Text(
                               currentItem!.course,
-                              style: const TextStyle(fontSize: 18.0),
+                              style: const TextStyle(fontSize: 16.0),
                             ),
                             const SizedBox(height: 10),
                             GreyText(
@@ -332,7 +333,7 @@ class _CourseViewState extends State<CourseView>
                           children: [
                             Text(
                               currentItem!.courseSessionName,
-                              style: const TextStyle(fontSize: 18.0),
+                              style: const TextStyle(fontSize: 16.0),
                             ),
                             const SizedBox(height: 10),
                             GreyText(

@@ -39,7 +39,7 @@ class _RegisterViewState extends State<RegisterView> {
                   children: [
                     const Center(
                       child: Image(
-                        image: AssetImage("images/logo.png"),
+                        image: AssetImage("images/logo-dark.png"),
                         height: 100,
                         width: 100,
                       ),

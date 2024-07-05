@@ -1,11 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:campus_connect_app/models/error.model.dart';
 import 'package:campus_connect_app/models/exams/result.models.dart';
 import 'package:campus_connect_app/services/result.service.dart';
 import 'package:campus_connect_app/view/home.view.dart';
-import 'package:get/get.dart';
-
 import 'package:campus_connect_app/utils/global.colors.dart';
-import 'package:flutter/material.dart';
 
 class ResultView extends StatefulWidget {
   const ResultView({Key? key}) : super(key: key);
@@ -29,6 +28,7 @@ class _ResultViewState extends State<ResultView> {
     setState(() {
       isRefreshing = true;
     });
+
     dynamic data = await ResultsAPIService().getResults();
 
     if (data is Result) {
@@ -52,132 +52,110 @@ class _ResultViewState extends State<ResultView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("PU Results", style: TextStyle(color: Colors.white)),
+        title: const Text(
+          "PU Results",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: GlobalColors.mainColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white,),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Get.off(() => const HomeView());
           },
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 10.0),
+        padding: const EdgeInsets.all(16.0),
         child: results != null
             ? RefreshIndicator(
                 onRefresh: refreshData,
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Column(
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: results!.data.length,
-                        itemBuilder: (content, index) {
-                          List<Data>? resultList = results?.data;
-                          var currentItem = resultList?[index];
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: results!.data.map((currentItem) {
+                      // Filter out subjects with "-" grade
+                      final filteredSubjects = currentItem.result.entries
+                          .where((entry) => entry.value != "-")
+                          .map((entry) {
+                        final subject = entry.key
+                            .replaceAll('_', ' ')
+                            .split(' ')
+                            .map((word) => capitalizeSubjectWord(word))
+                            .join(' ');
 
-                          // Filter out subjects with "-" grade
-                          final filteredSubjects = currentItem?.result.entries
-                              .where((entry) => entry.value != "-")
-                              .map((entry) {
-                            final subject = entry.key
-                                .replaceAll('_', ' ')
-                                .split(' ')
-                                .map((word) => capitalizeSubjectWord(word))
-                                .join(' ');
+                        final grade = entry.value;
 
-                            final grade = entry.value;
+                        return MapEntry(subject, grade);
+                      });
 
-                            return MapEntry(subject, grade);
-                          });
-
-                          return Column(
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        elevation: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0,
-                                  vertical: 10.0,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${currentItem?.year} ${currentItem?.season}",
-                                      style: const TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20.0),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: filteredSubjects?.map(
-                                            (entry) {
-                                              final subject = entry.key;
-                                              final grade = entry.value;
-
-                                              return Padding(
-                                                padding: const EdgeInsets.only(
-                                                  bottom: 16.0,
-                                                ),
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        subject,
-                                                        style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 20.0),
-                                                    Container(
-                                                      width: 40.0,
-                                                      height: 24.0,
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            gradeColor(grade),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4.0),
-                                                      ),
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Text(
-                                                        grade,
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 12.0,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          ).toList() ??
-                                          [],
-                                    ),
-                                  ],
+                              Text(
+                                "${currentItem.year} ${currentItem.season}",
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              if (index < results!.data.length - 1)
-                                const Divider(
-                                  color: Colors.grey,
-                                  thickness: 1.0,
-                                  indent: 20.0,
-                                  endIndent: 20.0,
-                                ),
+                              const SizedBox(height: 20.0),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: filteredSubjects.map((entry) {
+                                  final subject = entry.key;
+                                  final grade = entry.value;
+
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: 16.0,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            subject,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 50.0, // Fixed width for grade
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12.0, vertical: 4.0),
+                                          decoration: BoxDecoration(
+                                            color: gradeColor(grade),
+                                            borderRadius:
+                                                BorderRadius.circular(4.0),
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            grade,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
                             ],
-                          );
-                        },
-                      ),
-                    ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
               )
