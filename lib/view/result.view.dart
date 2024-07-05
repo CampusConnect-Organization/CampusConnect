@@ -129,7 +129,7 @@ class _ResultViewState extends State<ResultView> {
                                           ),
                                         ),
                                         Container(
-                                          width: 50.0, // Fixed width for grade
+                                          width: 60.0, // Fixed width for grade
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 12.0, vertical: 4.0),
                                           decoration: BoxDecoration(
