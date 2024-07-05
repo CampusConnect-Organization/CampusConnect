@@ -28,11 +28,11 @@ class _LibraryViewState extends State<LibraryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Library Section"),
+        title: const Text("Library Section", style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: GlobalColors.mainColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white,),
           onPressed: () => Get.off(() => const HomeView()),
         ),
       ),

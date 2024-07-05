@@ -1,8 +1,10 @@
+import 'package:campus_connect_app/view/exam.view.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_connect_app/models/notification.model.dart' as noti;
 import 'package:campus_connect_app/services/notification.service.dart';
 import 'package:campus_connect_app/utils/global.colors.dart';
 import 'package:campus_connect_app/utils/snackbar.dart';
+import 'package:get/get.dart';
 
 class NotificationView extends StatefulWidget {
   const NotificationView({Key? key}) : super(key: key);
@@ -43,9 +45,15 @@ class _NotificationViewState extends State<NotificationView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: const Text('Notifications', style: TextStyle(color: Colors.white)),
         backgroundColor: GlobalColors.mainColor,
-        centerTitle: true,
+        centerTitle: true,  
+         leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white,),
+          onPressed: () {
+            Get.off(() => const ExamView());
+          },
+        ),
       ),
       body: buildNotificationList(),
     );
@@ -59,7 +67,7 @@ class _NotificationViewState extends State<NotificationView> {
         ),
       );
     } else if (notifications.isEmpty) {
-      return Center(
+      return const Center(
         child: Text(
           'No notifications available.',
           style: TextStyle(fontSize: 18),

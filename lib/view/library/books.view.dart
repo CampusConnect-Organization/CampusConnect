@@ -81,7 +81,7 @@ class _BooksViewState extends State<BooksView> {
                                 // Handle the open button press
                                 // You can add your custom logic here
                               },
-                              child: const Text('Open'),
+                              child: const Text('Open', style: TextStyle(color: Colors.white)),
                             ),
                           ),
                           const Divider(),

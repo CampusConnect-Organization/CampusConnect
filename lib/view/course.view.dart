@@ -149,7 +149,7 @@ class _CourseViewState extends State<CourseView>
     Map<String, List<Datum>> groupedCourses = groupCoursesBySemester();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Course Details"),
+        title: const Text("Course Details", style: TextStyle(color: Colors.white),),
         backgroundColor: GlobalColors.mainColor,
         centerTitle: true,
         leading: IconButton(
@@ -167,11 +167,13 @@ class _CourseViewState extends State<CourseView>
             indicatorColor: Colors.white,
             controller: _tabController,
             tabs: const [
-              Tab(text: 'Courses'),
+              Tab(text: 'Courses',),
               Tab(text: 'Classes'),
               Tab(text: 'My Courses'),
               Tab(text: "My Enrolls")
             ],
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white.withOpacity(0.5),
           ),
         ),
       ),

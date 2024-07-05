@@ -77,7 +77,7 @@ class _UserProfileViewState extends State<UserProfileView> {
           onPressed: () {
             Get.off(const HomeView());
           },
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white,),
         ),
         actions: const [
           IconButton(

@@ -135,7 +135,7 @@ class _BookInstancesViewState extends State<BookInstancesView> {
                         onPressed: isBorrowed
                             ? null
                             : () => borrowBook(bookInstanceData.id),
-                        child: const Text('Borrow'),
+                        child: const Text('Borrow', style: TextStyle(color: Colors.white)),
                       ),
                     ),
                   );

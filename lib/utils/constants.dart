@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ApiConstants {
-  static String baseUrl = 'http://192.168.17.10:8000/';
+  static String baseUrl = 'http://192.168.100.84:8000/';
   static String loginEndpoint = 'api/auth/login/';
   static String registerEndpoint = 'api/auth/register/';
   static String profileEndpoint = "api/student-profile/";

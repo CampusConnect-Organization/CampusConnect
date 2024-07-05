@@ -13,7 +13,7 @@ void showConfirmationDialog(String text, Function() func) {
       },
       style: ButtonStyle(
           backgroundColor: MaterialStatePropertyAll(GlobalColors.mainColor)),
-      child: const Text('Yes'),
+      child: const Text('Yes', style: TextStyle(color: Colors.white)),
     ),
     cancel: TextButton(
       onPressed: () {

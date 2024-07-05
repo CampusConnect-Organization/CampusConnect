@@ -7,7 +7,6 @@ import 'package:campus_connect_app/utils/constants.dart';
 import 'package:campus_connect_app/utils/dialog.dart';
 import 'package:campus_connect_app/utils/global.colors.dart';
 import 'package:campus_connect_app/utils/snackbar.dart';
-import 'package:campus_connect_app/view/calendar.view.dart';
 import 'package:campus_connect_app/view/course.view.dart';
 import 'package:campus_connect_app/view/exam.view.dart';
 import 'package:campus_connect_app/view/library.view.dart';
@@ -54,10 +53,10 @@ class HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Dashboard"),
+        title: const Text("Dashboard", style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
+            icon: const Icon(Icons.logout, color: Colors.white,),
             onPressed: () async {
               SharedPreferences pref = await prefs;
 
@@ -69,6 +68,7 @@ class HomeViewState extends State<HomeView> {
             },
           ),
         ],
+        leading: null,
         elevation: 0,
         centerTitle: true,
         backgroundColor: GlobalColors.mainColor,
@@ -128,10 +128,6 @@ class HomeViewState extends State<HomeView> {
                           getExpanded("library", "Library", "Access Library",
                               () {
                             Get.to(() => const LibraryView());
-                          }),
-                          getExpanded("calendar", "Calendar", "View Calendar",
-                              () {
-                            Get.to(() => const CalendarView());
                           }),
                         ],
                       ),
