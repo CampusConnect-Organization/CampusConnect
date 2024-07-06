@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:campus_connect_app/models/auth/authentication.models.dart';
 import 'package:campus_connect_app/models/error.model.dart';
 import 'package:campus_connect_app/utils/global.colors.dart';
@@ -26,6 +24,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late final Authentication model;
   late final Errors errors;
+  bool isLoading = false;
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -34,127 +33,157 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(15.0),
-            child: Container(
-              padding: const EdgeInsets.only(top: 100),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Center(
-                    child: Image(
-                      image: AssetImage("images/logo-dark.png"),
-                      height: 150,
-                      width: 150,
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: SafeArea(
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(15.0),
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 100),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Center(
+                              child: Image(
+                                image: AssetImage("images/logo-dark.png"),
+                                height: 150,
+                                width: 150,
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "CampusConnect",
+                                style: TextStyle(
+                                    color: GlobalColors.mainColor,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Center(
+                              child: Text(
+                                "Login to your account",
+                                style: TextStyle(
+                                    color: GlobalColors.textColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextFormGlobal(
+                              controller: usernameController,
+                              obscure: false,
+                              labelText: "Username",
+                              text: "Username",
+                              textInputType: TextInputType.text,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextFormGlobal(
+                              controller: passwordController,
+                              obscure: true,
+                              labelText: "Password",
+                              text: "Password",
+                              textInputType: TextInputType.text,
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            ButtonGlobal(
+                              text: "Login",
+                              onTap: () async {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                try {
+                                  dynamic result = await LoginAPIService()
+                                      .login(usernameController.text,
+                                          passwordController.text);
+                                  if (result is Authentication) {
+                                    model = result;
+                                    if (model.success) {
+                                      SharedPreferences pref = await prefs;
+                                      await pref.setString("accessToken",
+                                          model.data.accessToken);
+                                      await pref.setString("refreshToken",
+                                          model.data.refreshToken);
+                                      Get.off(() => const HomeView());
+                                      generateSuccessSnackbar(
+                                          "Success", model.message);
+                                      await RegisterAPIService()
+                                          .registerFCMDevice();
+                                    }
+                                  } else if (result is Errors) {
+                                    errors = result;
+                                    generateErrorSnackbar(
+                                        "Error", errors.message);
+                                    passwordController.text = "";
+                                  } else {
+                                    generateErrorSnackbar(
+                                        "Error", "Something went wrong!");
+                                  }
+                                } catch (e) {
+                                  generateErrorSnackbar("Error",
+                                      "An unspecified error occurred!");
+                                } finally {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "CampusConnect",
-                      style: TextStyle(
-                          color: GlobalColors.mainColor,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: Text(
-                      "Login to your account",
-                      style: TextStyle(
-                          color: GlobalColors.textColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormGlobal(
-                    controller: usernameController,
-                    obscure: false,
-                    labelText: "Username",
-                    text: "Username",
-                    textInputType: TextInputType.text,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormGlobal(
-                    controller: passwordController,
-                    obscure: true,
-                    labelText: "Password",
-                    text: "Password",
-                    textInputType: TextInputType.text,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  ButtonGlobal(
-                    text: "Login",
-                    onTap: () async {
-                      try {
-                        dynamic result = await LoginAPIService().login(
-                            usernameController.text, passwordController.text);
-                        if (result is Authentication) {
-                          model = result;
-                          if (model.success) {
-                            SharedPreferences pref = await prefs;
-                            await pref.setString(
-                                "accessToken", model.data.accessToken);
-                            await pref.setString(
-                                "refreshToken", model.data.refreshToken);
-                            Get.off(() => const HomeView());
-                            generateSuccessSnackbar("Success", model.message);
-                            await RegisterAPIService().registerFCMDevice();
-                          }
-                        } else if (result is Errors) {
-                          errors = result;
-                          generateErrorSnackbar("Error", errors.message);
-                          passwordController.text = "";
-                        } else {
-                          generateErrorSnackbar(
-                              "Error", "Something went wrong!");
-                        }
-                      } catch (e) {
-                        generateErrorSnackbar(
-                            "Error", "An unspecified error occurred!");
-                      }
-                    },
-                  ),
-                ],
+                ),
               ),
-            ),
+              if (!isLoading)
+                Container(
+                  height: 50,
+                  color: Colors.white,
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account?"),
+                      InkWell(
+                        onTap: () {
+                          Get.off(() => const RegisterView());
+                        },
+                        child: Text(
+                          " Signup",
+                          style: TextStyle(
+                              color: GlobalColors.mainColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
           ),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        height: 50,
-        color: Colors.white,
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Don't have an account?"),
-            InkWell(
-              onTap: () {
-                Get.off(() => const RegisterView());
-              },
-              child: Text(
-                " Signup",
-                style: TextStyle(color: GlobalColors.mainColor),
+          if (isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(),
               ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }
 }
-
