@@ -4,6 +4,7 @@ import 'package:campus_connect_app/utils/global.colors.dart';
 import 'package:campus_connect_app/view/home.view.dart';
 import 'package:campus_connect_app/view/register.view.dart';
 import 'package:campus_connect_app/widgets/button.global.dart';
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:campus_connect_app/widgets/text.form.global.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_connect_app/services/login.service.dart';
@@ -178,8 +179,10 @@ class _LoginViewState extends State<LoginView> {
           if (isLoading)
             Container(
               color: Colors.black.withOpacity(0.5),
-              child: const Center(
-                child: CircularProgressIndicator(),
+              child: Center(
+                child: ModernSpinner(
+                  color: GlobalColors.mainColor,
+                ),
               ),
             ),
         ],

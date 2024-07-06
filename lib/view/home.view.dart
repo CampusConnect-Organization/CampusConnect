@@ -8,11 +8,10 @@ import 'package:campus_connect_app/utils/dialog.dart';
 import 'package:campus_connect_app/utils/global.colors.dart';
 import 'package:campus_connect_app/utils/snackbar.dart';
 import 'package:campus_connect_app/view/course.view.dart';
-import 'package:campus_connect_app/view/exam.view.dart';
-import 'package:campus_connect_app/view/library.view.dart';
 import 'package:campus_connect_app/view/login.view.dart';
 import 'package:campus_connect_app/view/result.view.dart';
 import 'package:campus_connect_app/widgets/profile.widget.dart';
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:flutter/services.dart';
 import 'package:campus_connect_app/view/profile.view.dart';
 import 'package:campus_connect_app/view/profileCreate.view.dart';
@@ -56,7 +55,10 @@ class HomeViewState extends State<HomeView> {
         title: const Text("Dashboard", style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white,),
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
             onPressed: () async {
               SharedPreferences pref = await prefs;
 
@@ -68,7 +70,16 @@ class HomeViewState extends State<HomeView> {
             },
           ),
         ],
-        leading: null,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.dark_mode,
+            color: Colors.white,
+          ),
+          onPressed: () => {
+            generateErrorSnackbar(
+                "Unimplemented", "Feature not implemented yet!")
+          },
+        ),
         elevation: 0,
         centerTitle: true,
         backgroundColor: GlobalColors.mainColor,
@@ -116,7 +127,9 @@ class HomeViewState extends State<HomeView> {
                             Get.to(() => const ResultView());
                           }),
                           getExpanded("exam", "Exams", "View Exams", () {
-                            Get.to(() => const ExamView());
+                            // Get.to(() => const ExamView());
+                            generateErrorSnackbar("Unimplemented",
+                                "Feature not implemented yet!");
                           }),
                         ],
                       ),
@@ -127,7 +140,9 @@ class HomeViewState extends State<HomeView> {
                         children: <Widget>[
                           getExpanded("library", "Library", "Access Library",
                               () {
-                            Get.to(() => const LibraryView());
+                            // Get.to(() => const LibraryView());
+                            generateErrorSnackbar("Unimplemented",
+                                "Feature not implemented yet!");
                           }),
                         ],
                       ),
@@ -136,9 +151,7 @@ class HomeViewState extends State<HomeView> {
                 ),
               )
             : Center(
-                child: CircularProgressIndicator(
-                  color: GlobalColors.mainColor,
-                ),
+                child: ModernSpinner(color: GlobalColors.mainColor,)
               ),
       ),
     );

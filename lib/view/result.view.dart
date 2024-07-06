@@ -1,3 +1,4 @@
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:campus_connect_app/models/error.model.dart';
@@ -161,8 +162,9 @@ class _ResultViewState extends State<ResultView> {
               )
             : Center(
                 child: isRefreshing
-                    ? CircularProgressIndicator(
+                    ? ModernSpinner(
                         color: GlobalColors.mainColor,
+                        size: 50,
                       )
                     : const Text("Failed to fetch exams."),
               ),

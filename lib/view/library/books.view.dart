@@ -1,4 +1,5 @@
 import 'package:campus_connect_app/view/library/bookInstances.view.dart';
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/error.model.dart';
@@ -94,7 +95,7 @@ class _BooksViewState extends State<BooksView> {
             )
           : Center(
               child: isRefreshing
-                  ? CircularProgressIndicator(
+                  ? ModernSpinner(
                       color: GlobalColors.mainColor,
                     )
                   : const Text("Failed to fetch books."),

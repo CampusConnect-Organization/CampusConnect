@@ -1,3 +1,4 @@
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/error.model.dart';
@@ -58,7 +59,7 @@ class _ReturnsViewState extends State<ReturnsView> {
                   ReturnData returnData = returns!.data[index];
 
                   return Container(
-                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
@@ -118,7 +119,7 @@ class _ReturnsViewState extends State<ReturnsView> {
             )
           : Center(
               child: isRefreshing
-                  ? CircularProgressIndicator(
+                  ? ModernSpinner(
                       color: GlobalColors.mainColor,
                     )
                   : const Text("Failed to fetch returns."),

@@ -60,7 +60,7 @@ Expanded getExpanded(
               borderRadius: BorderRadius.circular(12.0),
               child: Image.asset(
                 "images/$image.png",
-                height: 80.0,
+                height: 70.0,
                 fit: BoxFit.cover,
               ),
             ),

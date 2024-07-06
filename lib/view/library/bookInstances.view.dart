@@ -1,3 +1,4 @@
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/error.model.dart';
@@ -150,7 +151,7 @@ class _BookInstancesViewState extends State<BookInstancesView> {
             )
           : Center(
               child: isRefreshing
-                  ? CircularProgressIndicator(
+                  ? ModernSpinner(
                       color: GlobalColors.mainColor,
                     )
                   : const Text("No book instances found!"),

@@ -7,6 +7,7 @@ import 'package:campus_connect_app/utils/global.colors.dart';
 import 'package:campus_connect_app/utils/snackbar.dart';
 import 'package:campus_connect_app/view/home.view.dart';
 import 'package:campus_connect_app/view/login.view.dart';
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart'; // Import the image_picker package
@@ -251,10 +252,10 @@ class _UserProfileViewState extends State<UserProfileView> {
               )
             : Center(
                 child: _isRefreshing
-                    ? CircularProgressIndicator(
+                    ? ModernSpinner(
                         color: GlobalColors.mainColor,
                       )
-                    : CircularProgressIndicator(
+                    : ModernSpinner(
                         color: GlobalColors.mainColor,
                       )
               ),

@@ -1,5 +1,6 @@
 import 'package:campus_connect_app/models/success.model.dart';
 import 'package:campus_connect_app/utils/snackbar.dart';
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/error.model.dart';
@@ -155,7 +156,7 @@ class _BorrowsViewState extends State<BorrowsView> {
             )
           : Center(
               child: isRefreshing
-                  ? CircularProgressIndicator(
+                  ? ModernSpinner(
                       color: GlobalColors.mainColor,
                     )
                   : const Text("Failed to fetch borrows."),

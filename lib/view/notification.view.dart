@@ -1,4 +1,5 @@
 import 'package:campus_connect_app/view/exam.view.dart';
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_connect_app/models/notification.model.dart' as noti;
 import 'package:campus_connect_app/services/notification.service.dart';
@@ -62,8 +63,8 @@ class _NotificationViewState extends State<NotificationView> {
   Widget buildNotificationList() {
     if (isLoading) {
       return Center(
-        child: CircularProgressIndicator(
-          backgroundColor: GlobalColors.mainColor,
+        child: ModernSpinner(
+          color: GlobalColors.mainColor,
         ),
       );
     } else if (notifications.isEmpty) {
@@ -86,17 +87,17 @@ class _NotificationViewState extends State<NotificationView> {
   Widget buildNotificationItem(noti.NotificationData notification) {
     return Card(
       elevation: 3,
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: ListTile(
         title: Text(
           notification.title,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(
             notification.body,
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
         ),
       ),

@@ -3,7 +3,7 @@ import 'package:campus_connect_app/utils/global.colors.dart';
 import 'package:flutter/material.dart';
 
 class ProfileWidget extends StatefulWidget {
-  ProfileWidget({
+  const ProfileWidget({
     Key? key,
     required this.profilePicture,
     required this.firstName,

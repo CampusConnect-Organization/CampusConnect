@@ -3,6 +3,7 @@ import 'package:campus_connect_app/services/register.service.dart';
 import 'package:campus_connect_app/utils/snackbar.dart';
 import 'package:campus_connect_app/view/login.view.dart';
 import 'package:campus_connect_app/widgets/button.global.dart';
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:campus_connect_app/widgets/text.form.global.dart';
 import 'package:campus_connect_app/utils/global.colors.dart';
 import 'package:flutter/material.dart';
@@ -184,8 +185,10 @@ class _RegisterViewState extends State<RegisterView> {
           if (isLoading)
                 Container(
                   color: Colors.black.withOpacity(0.5),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
+                  child: Center(
+                    child: ModernSpinner(
+                      color: GlobalColors.mainColor,
+                    ),
                   ),
                 ),
         ],

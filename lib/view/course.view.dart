@@ -1,4 +1,6 @@
+import 'package:campus_connect_app/utils/snackbar.dart';
 import 'package:campus_connect_app/widgets/greyText.widget.dart';
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:campus_connect_app/models/error.model.dart';
@@ -47,16 +49,25 @@ class _CourseViewState extends State<CourseView>
     setState(() {
       isRefreshing = true;
     });
-
-    dynamic data = await CourseAPIService().getCourses();
-    if (data is Courses) {
+    try {
+      dynamic data = await CourseAPIService().getCourses();
+      if (data is Courses) {
+        setState(() {
+          courses = data;
+          isRefreshing = false;
+        });
+      } else if (data is Errors) {
+        setState(() {
+          errors = data;
+          isRefreshing = false;
+        });
+      }
+    } catch (error) {
+      generateErrorSnackbar("Error", "An unspecified error occurred!");
+    } finally {
       setState(() {
-        courses = data;
         isRefreshing = false;
       });
-    } else if (data is Errors) {
-      errors = data;
-      isRefreshing = false;
     }
   }
 
@@ -65,15 +76,25 @@ class _CourseViewState extends State<CourseView>
       isRefreshing = true;
     });
 
-    dynamic data = await CourseAPIService().getCourseEnrollments();
-    if (data is CourseEnrollments) {
+    try {
+      dynamic data = await CourseAPIService().getCourseEnrollments();
+      if (data is CourseEnrollments) {
+        setState(() {
+          enrollments = data;
+          isRefreshing = false;
+        });
+      } else if (data is Errors) {
+        setState(() {
+          errors = data;
+          isRefreshing = false;
+        });
+      }
+    } catch (error) {
+      generateErrorSnackbar("Error", "An unspecified error occurred!");
+    } finally {
       setState(() {
-        enrollments = data;
         isRefreshing = false;
       });
-    } else if (data is Errors) {
-      errors = data;
-      isRefreshing = false;
     }
   }
 
@@ -81,16 +102,25 @@ class _CourseViewState extends State<CourseView>
     setState(() {
       isRefreshing = true;
     });
-
-    dynamic data = await CourseAPIService().getCourseSessions();
-    if (data is CourseSessions) {
+    try {
+      dynamic data = await CourseAPIService().getCourseSessions();
+      if (data is CourseSessions) {
+        setState(() {
+          courseSessions = data;
+          isRefreshing = false;
+        });
+      } else if (data is Errors) {
+        setState(() {
+          errors = data;
+          isRefreshing = false;
+        });
+      }
+    } catch (error) {
+      generateErrorSnackbar("Error", "An unspecified error occurred!");
+    } finally {
       setState(() {
-        courseSessions = data;
         isRefreshing = false;
       });
-    } else if (data is Errors) {
-      errors = data;
-      isRefreshing = false;
     }
   }
 
@@ -99,15 +129,25 @@ class _CourseViewState extends State<CourseView>
       isRefreshing = true;
     });
 
-    dynamic data = await CourseAPIService().getStudentCourses();
-    if (data is StudentCourses) {
+    try {
+      dynamic data = await CourseAPIService().getStudentCourses();
+      if (data is StudentCourses) {
+        setState(() {
+          studentCourses = data;
+          isRefreshing = false;
+        });
+      } else if (data is Errors) {
+        setState(() {
+          errors = data;
+          isRefreshing = false;
+        });
+      }
+    } catch (error) {
+      generateErrorSnackbar("Error", "An unspecified error occurred!");
+    } finally {
       setState(() {
-        studentCourses = data;
         isRefreshing = false;
       });
-    } else if (data is Errors) {
-      errors = data;
-      isRefreshing = false;
     }
   }
 
@@ -149,7 +189,10 @@ class _CourseViewState extends State<CourseView>
     Map<String, List<Datum>> groupedCourses = groupCoursesBySemester();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Course Details", style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "Course Details",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: GlobalColors.mainColor,
         centerTitle: true,
         leading: IconButton(
@@ -167,7 +210,9 @@ class _CourseViewState extends State<CourseView>
             indicatorColor: Colors.white,
             controller: _tabController,
             tabs: const [
-              Tab(text: 'Courses',),
+              Tab(
+                text: 'Courses',
+              ),
               Tab(text: 'Classes'),
               Tab(text: 'My Courses'),
               Tab(text: "My Enrolls")
@@ -206,11 +251,11 @@ class _CourseViewState extends State<CourseView>
                   )
                 : isRefreshing
                     ? Center(
-                        child: CircularProgressIndicator(
+                        child: ModernSpinner(
                           color: GlobalColors.mainColor,
                         ),
                       )
-                    : Center(
+                    : const Center(
                         child: Text("Failed to fetch courses."),
                       ),
           ),
@@ -255,10 +300,9 @@ class _CourseViewState extends State<CourseView>
                   )
                 : isRefreshing
                     ? Center(
-                        child: CircularProgressIndicator(
-                          color: GlobalColors.mainColor,
-                        ),
-                      )
+                        child: ModernSpinner(
+                        color: GlobalColors.mainColor,
+                      ))
                     : const Center(
                         child: Text("No classes are currently running!"),
                       ),
@@ -302,11 +346,10 @@ class _CourseViewState extends State<CourseView>
                   )
                 : isRefreshing
                     ? Center(
-                        child: CircularProgressIndicator(
-                          color: GlobalColors.mainColor,
-                        ),
-                      )
-                    : Center(child: Text("You don't have any courses!")),
+                        child: ModernSpinner(
+                        color: GlobalColors.mainColor,
+                      ))
+                    : const Center(child: Text("You don't have any courses!")),
           ),
           // Placeholder for "My Enrolls" tab content
           RefreshIndicator(
@@ -352,10 +395,7 @@ class _CourseViewState extends State<CourseView>
                   )
                 : isRefreshing
                     ? Center(
-                        child: CircularProgressIndicator(
-                          color: GlobalColors.mainColor,
-                        ),
-                      )
+                        child: ModernSpinner(color: GlobalColors.mainColor))
                     : const Center(
                         child: Text("You haven't enrolled in any courses!"),
                       ),
