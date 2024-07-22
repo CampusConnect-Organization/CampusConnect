@@ -1,6 +1,8 @@
 import 'package:campus_connect_app/utils/constants.dart';
 import 'package:campus_connect_app/utils/global.colors.dart';
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({
@@ -13,10 +15,10 @@ class ProfileWidget extends StatefulWidget {
   final String firstName;
 
   @override
-  _ProfileWidgetState createState() => _ProfileWidgetState();
+  ProfileWidgetState createState() => ProfileWidgetState();
 }
 
-class _ProfileWidgetState extends State<ProfileWidget> {
+class ProfileWidgetState extends State<ProfileWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +55,17 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   ),
                   trailing: CircleAvatar(
                     radius: 40.0,
-                    backgroundImage: NetworkImage(
-                        ApiConstants.baseUrl + widget.profilePicture),
+                    backgroundColor: Colors.grey[200],
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: ApiConstants.baseUrl + widget.profilePicture,
+                        placeholder: (context, url) => const ModernSpinner(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        width: 80.0,
+                        height: 80.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
               ),
