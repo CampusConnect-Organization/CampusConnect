@@ -7,6 +7,7 @@ import 'package:campus_connect_app/utils/constants.dart';
 import 'package:campus_connect_app/utils/dialog.dart';
 import 'package:campus_connect_app/utils/global.colors.dart';
 import 'package:campus_connect_app/utils/snackbar.dart';
+import 'package:campus_connect_app/view/attendance/courseSession.view.dart';
 import 'package:campus_connect_app/view/course.view.dart';
 import 'package:campus_connect_app/view/exam.view.dart';
 import 'package:campus_connect_app/view/library.view.dart';
@@ -143,7 +144,7 @@ class HomeViewState extends State<HomeView> {
                             Get.to(() => const LibraryView());
                           }),
                           getExpanded("attendance", "Attendance", "View Attendances", () => {
-                            generateErrorSnackbar("Unimplemented", "Feature not implemented yet!")
+                            Get.to(() => const AttendanceCourseSession())
                           })
                         ],
                       ),
