@@ -19,10 +19,10 @@ class TextFormGlobal extends StatefulWidget {
   final Function()? onTap;
 
   @override
-  _TextFormGlobalState createState() => _TextFormGlobalState();
+  TextFormGlobalState createState() => TextFormGlobalState();
 }
 
-class _TextFormGlobalState extends State<TextFormGlobal> {
+class TextFormGlobalState extends State<TextFormGlobal> {
   bool _obscureText = true;
   bool _isFocused = false;
 

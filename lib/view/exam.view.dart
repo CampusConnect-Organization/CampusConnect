@@ -14,10 +14,10 @@ class ExamView extends StatefulWidget {
   const ExamView({Key? key}) : super(key: key);
 
   @override
-  _ExamViewState createState() => _ExamViewState();
+  ExamViewState createState() => ExamViewState();
 }
 
-class _ExamViewState extends State<ExamView> {
+class ExamViewState extends State<ExamView> {
   Exams? exams;
   Errors? errors;
   bool isRefreshing = false;

@@ -8,10 +8,10 @@ class ModernSpinner extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ModernSpinnerState createState() => _ModernSpinnerState();
+  ModernSpinnerState createState() => ModernSpinnerState();
 }
 
-class _ModernSpinnerState extends State<ModernSpinner>
+class ModernSpinnerState extends State<ModernSpinner>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
