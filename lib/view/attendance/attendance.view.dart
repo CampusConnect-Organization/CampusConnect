@@ -5,14 +5,12 @@ import 'package:campus_connect_app/models/error.model.dart';
 import 'package:campus_connect_app/utils/constants.dart';
 import 'package:campus_connect_app/services/attendance.service.dart';
 import 'package:campus_connect_app/utils/snackbar.dart';
-import 'package:campus_connect_app/widgets/greyText.widget.dart';
 import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:campus_connect_app/utils/global.colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:nepali_utils/nepali_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class AttendanceDetail extends StatefulWidget {
@@ -31,6 +29,7 @@ class _AttendanceDetailState extends State<AttendanceDetail> {
   bool isUploading = false;
   late Errors errors;
   final ImagePicker _picker = ImagePicker();
+  // ignore: unused_field
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   Map<DateTime, String> attendanceMap = {};
