@@ -9,6 +9,7 @@ import 'package:campus_connect_app/utils/global.colors.dart';
 import 'package:campus_connect_app/utils/snackbar.dart';
 import 'package:campus_connect_app/view/home.view.dart';
 import 'package:campus_connect_app/widgets/button.global.dart';
+import 'package:campus_connect_app/widgets/spinner.widget.dart';
 import 'package:campus_connect_app/widgets/text.form.global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,7 @@ class ProfileCreateView extends StatefulWidget {
 class ProfileCreateViewState extends State<ProfileCreateView> {
   late final Profile profile;
   late final Errors errors;
+  bool isLoading = false;
 
   DateTime selectedDate = DateTime.now();
   File? image;
@@ -102,195 +104,215 @@ class ProfileCreateViewState extends State<ProfileCreateView> {
         backgroundColor: GlobalColors.mainColor,
         foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () async {
-                    await pickImage();
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    radius: 50,
-                    backgroundImage: image != null ? FileImage(image!) : null,
-                    child: image == null
-                        ? const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                          )
-                        : null,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                TextFormGlobal(
-                  labelText: "First Name",
-                  controller: firstNameController,
-                  text: "Enter first name",
-                  textInputType: TextInputType.text,
-                  obscure: false,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormGlobal(
-                  controller: lastNameController,
-                  text: "Enter last name",
-                  textInputType: TextInputType.text,
-                  obscure: false,
-                  labelText: "Last Name",
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormGlobal(
-                  controller: phoneController,
-                  text: "Enter phone number",
-                  textInputType: TextInputType.number,
-                  obscure: false,
-                  labelText: "Phone Number",
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormGlobal(
-                  controller: symbolNumberController,
-                  text: "Enter your symbol number",
-                  textInputType: TextInputType.number,
-                  obscure: false,
-                  labelText: "Symbol Number",
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                DropdownButtonFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Select your gender',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(6),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Center(
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        await pickImage();
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        radius: 50,
+                        backgroundImage: image != null ? FileImage(image!) : null,
+                        child: image == null
+                            ? const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              )
+                            : null,
+                      ),
                     ),
-                    contentPadding: const EdgeInsets.only(top: 3, left: 14),
-                  ),
-                  value: selectedOption,
-                  onChanged: (newValue) {
-                    setState(() {
-                      selectedOption = newValue;
-                    });
-                  },
-                  items: options.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(titleCase(value)),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormGlobal(
-                  controller: dateController,
-                  text: "Enter DOB",
-                  textInputType: TextInputType.none,
-                  obscure: false,
-                  labelText: "Date of Birth",
-                  onTap: () {
-                    _selectDate(context);
-                    dateController.text =
-                        DateFormat('yyyy-MM-dd').format(selectedDate);
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormGlobal(
-                  controller: addressController,
-                  text: "Enter your address",
-                  textInputType: TextInputType.streetAddress,
-                  obscure: false,
-                  labelText: "Address",
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormGlobal(
-                  controller: academicsController,
-                  text: "Enter your academics",
-                  textInputType: TextInputType.text,
-                  obscure: false,
-                  labelText: "Academics",
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                DropdownButtonFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Select your semester',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(6),
+                    const SizedBox(height: 20),
+                    TextFormGlobal(
+                      labelText: "First Name",
+                      controller: firstNameController,
+                      text: "Enter first name",
+                      textInputType: TextInputType.text,
+                      obscure: false,
                     ),
-                    contentPadding: const EdgeInsets.only(top: 3, left: 14),
-                  ),
-                  value: selectedSemester,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedSemester = value;
-                    });
-                  },
-                  items: semesterOptions
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ButtonGlobal(
-                    text: "Submit",
-                    onTap: () async {
-                      try {
-                        if (image == null) {
-                          generateErrorSnackbar(
-                              "Error", "Please select a profile picture");
-                          return;
-                        }
-                        dynamic result =
-                            await ProfileAPIService().createProfile(
-                          phoneController.text,
-                          selectedOption!,
-                          dateController.text,
-                          addressController.text,
-                          firstNameController.text,
-                          lastNameController.text,
-                          academicsController.text,
-                          selectedSemester!,
-                          symbolNumberController.text,
-                          image!,
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormGlobal(
+                      controller: lastNameController,
+                      text: "Enter last name",
+                      textInputType: TextInputType.text,
+                      obscure: false,
+                      labelText: "Last Name",
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormGlobal(
+                      controller: phoneController,
+                      text: "Enter phone number",
+                      textInputType: TextInputType.number,
+                      obscure: false,
+                      labelText: "Phone Number",
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormGlobal(
+                      controller: symbolNumberController,
+                      text: "Enter your symbol number",
+                      textInputType: TextInputType.number,
+                      obscure: false,
+                      labelText: "Symbol Number",
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    DropdownButtonFormField(
+                      decoration: InputDecoration(
+                        hintText: 'Select your gender',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        contentPadding: const EdgeInsets.only(top: 3, left: 14),
+                      ),
+                      value: selectedOption,
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedOption = newValue;
+                        });
+                      },
+                      items: options.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(titleCase(value)),
                         );
-
-                        if (result is Profile) {
-                          profile = result;
-                          if (profile.success) {
-                            Get.off(() => const HomeView());
-                            generateSuccessSnackbar("Success", profile.message);
+                      }).toList(),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormGlobal(
+                      controller: dateController,
+                      text: "Enter DOB",
+                      textInputType: TextInputType.none,
+                      obscure: false,
+                      labelText: "Date of Birth",
+                      onTap: () {
+                        _selectDate(context);
+                        dateController.text =
+                            DateFormat('yyyy-MM-dd').format(selectedDate);
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormGlobal(
+                      controller: addressController,
+                      text: "Enter your address",
+                      textInputType: TextInputType.streetAddress,
+                      obscure: false,
+                      labelText: "Address",
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormGlobal(
+                      controller: academicsController,
+                      text: "Enter your academics",
+                      textInputType: TextInputType.text,
+                      obscure: false,
+                      labelText: "Academics",
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    DropdownButtonFormField(
+                      decoration: InputDecoration(
+                        hintText: 'Select your semester',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        contentPadding: const EdgeInsets.only(top: 3, left: 14),
+                      ),
+                      value: selectedSemester,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedSemester = value;
+                        });
+                      },
+                      items: semesterOptions
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ButtonGlobal(
+                        text: "Submit",
+                        onTap: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          try {
+                            if (image == null) {
+                              generateErrorSnackbar(
+                                  "Error", "Please select a profile picture");
+                              return;
+                            }
+                            dynamic result =
+                                await ProfileAPIService().createProfile(
+                              phoneController.text,
+                              selectedOption!,
+                              dateController.text,
+                              addressController.text,
+                              firstNameController.text,
+                              lastNameController.text,
+                              academicsController.text,
+                              selectedSemester!,
+                              symbolNumberController.text,
+                              image!,
+                            );
+          
+                            if (result is Profile) {
+                              profile = result;
+                              if (profile.success) {
+                                Get.off(() => const HomeView());
+                                generateSuccessSnackbar("Success", profile.message);
+                              }
+                            } else if (result is Errors) {
+                              errors = result;
+                              generateErrorSnackbar("Error", errors.message);
+                            }
+                          } catch (e) {
+                            generateErrorSnackbar(
+                                "Error", "An unspecified error occurred!");
+                          }finally{
+                            setState(() {
+                              isLoading = false;
+                            });
                           }
-                        } else if (result is Errors) {
-                          errors = result;
-                          generateErrorSnackbar("Error", errors.message);
-                        }
-                      } catch (e) {
-                        generateErrorSnackbar(
-                            "Error", "An unspecified error occurred!");
-                      }
-                    })
-              ],
+                        })
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
+           if (isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: Center(
+                child: ModernSpinner(
+                  color: GlobalColors.mainColor,
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
