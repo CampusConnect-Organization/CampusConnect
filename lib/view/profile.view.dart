@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campus_connect_app/models/profile.model.dart';
 import 'package:campus_connect_app/services/profile.service.dart';
 import 'package:campus_connect_app/utils/constants.dart';
@@ -60,7 +61,6 @@ class _UserProfileViewState extends State<UserProfileView> {
     final pickedFile = await _imagePicker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      // If the user picked an image, update the profile picture
       File imageFile = File(pickedFile.path);
       await ProfileAPIService().updateProfilePicture(imageFile);
       generateSuccessSnackbar("Success", "Profile picture updated successfully!");
@@ -109,8 +109,9 @@ class _UserProfileViewState extends State<UserProfileView> {
                             children: [
                               CircleAvatar(
                                 radius: 50,
-                                backgroundImage: NetworkImage(ApiConstants.baseUrl +
-                                    _profile!.data.profilePicture!),
+                                backgroundImage: CachedNetworkImageProvider(
+                                  "${ApiConstants.baseUrl}${_profile!.data.profilePicture}",
+                                ),
                               ),
                               Positioned(
                                 bottom: 0,
