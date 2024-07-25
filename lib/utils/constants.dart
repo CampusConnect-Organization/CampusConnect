@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiConstants {
   static String baseUrl = 'http://192.168.1.230:8000/';
@@ -21,6 +22,17 @@ class ApiConstants {
   static String notificationEndpoint = "api/notification/";
   static String listAttendanceEndpoint = "api/attendance/list-attendances/";
   static String markAttendanceEndpoint = "api/attendance/attendance_video/";
+
+  static Future<void> setBaseUrl(String url) async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("baseUrl", url);
+    baseUrl = url;
+  }
+
+  static Future<void> loadBaseUrl() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    baseUrl = prefs.getString("baseUrl") ?? baseUrl;
+  }
 }
 
 String titleCase(String input) {

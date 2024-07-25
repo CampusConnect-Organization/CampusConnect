@@ -1,6 +1,7 @@
 import 'package:campus_connect_app/models/auth/authentication.models.dart';
 import 'package:campus_connect_app/models/error.model.dart';
 import 'package:campus_connect_app/utils/global.colors.dart';
+import 'package:campus_connect_app/view/base_url.view.dart';
 import 'package:campus_connect_app/view/home.view.dart';
 import 'package:campus_connect_app/view/register.view.dart';
 import 'package:campus_connect_app/widgets/button.global.dart';
@@ -143,6 +144,13 @@ class _LoginViewState extends State<LoginView> {
                                   });
                                 }
                               },
+                            ),
+                             const SizedBox(height: 10),
+                            TextButton(
+                              onPressed: () {
+                                Get.to(() => const SetBaseUrlView());
+                              },
+                              child: const Text("Set Base URL"),
                             ),
                           ],
                         ),

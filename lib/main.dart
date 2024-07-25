@@ -1,4 +1,5 @@
 import 'package:campus_connect_app/helpers/notification.helpers.dart';
+import 'package:campus_connect_app/utils/constants.dart';
 import 'package:campus_connect_app/view/splash.view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await ApiConstants.loadBaseUrl();
   await Firebase.initializeApp();
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
